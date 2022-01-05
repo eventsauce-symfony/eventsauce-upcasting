@@ -6,7 +6,7 @@ services:
             context: ./php8
         container_name: eventsauce_upcasting_php
         volumes:
-            - ../../:/var/library/src:rw
+            - ../../:/var/library:rw
         networks:
             - default
 networks:
