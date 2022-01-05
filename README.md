@@ -1,2 +1,2 @@
 # eventsauce-upcasting
-Extended EventSauce upcasting components
+Extended upcasting components of the EventSauce
