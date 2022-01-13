@@ -15,7 +15,8 @@ final class ObjectUpcasterChain implements ObjectUpcaster
      */
     public function __construct(
         private iterable $upcasters
-    ){}
+    ) {
+    }
 
     public function upcast(Message $message): Message
     {

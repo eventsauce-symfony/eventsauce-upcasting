@@ -20,7 +20,8 @@ final class UpcasterChainWithEventGuessing implements Upcaster
         private iterable $upcasters,
         private ClassNameInflector $classNameInflector,
         private string $headerEventType = Header::EVENT_TYPE
-    ){}
+    ) {
+    }
 
     /**
      * @param array<string, array<mixed>> $message

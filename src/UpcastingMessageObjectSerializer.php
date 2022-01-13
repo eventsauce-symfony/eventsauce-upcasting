@@ -28,7 +28,7 @@ final class UpcastingMessageObjectSerializer implements MessageSerializer
     }
 
     /**
-     * @param  array<string, mixed> $payload
+     * @param array<string, mixed> $payload
      */
     public function unserializePayload(array $payload): Message
     {
