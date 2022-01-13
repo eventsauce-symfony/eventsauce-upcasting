@@ -9,11 +9,11 @@ use RuntimeException;
 
 final class UpcastFailedException extends RuntimeException implements EventSauceException
 {
-    public static function unableGuessEventBecauseHeaderNotFound(string $header): self
+    public static function typeHeaderNotFound(string $header): self
     {
         return new self(
             sprintf(
-                'Unable Guess Event, because header [%s] in event was not found. Check your message decorator definition.',
+                'Upcast failed, because type header [%s] not found. Check your message decorator definitions.',
                 $header
             )
         );

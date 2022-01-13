@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\UpcastingWithEventGuessing;
 
+use Andreo\EventSauce\Upcasting\Exception\UpcastFailedException;
 use Andreo\EventSauce\Upcasting\UpcasterChainWithEventGuessing;
 use EventSauce\EventSourcing\DotSeparatedSnakeCaseInflector;
 use EventSauce\EventSourcing\Header;
@@ -32,6 +33,20 @@ final class UpcasterChainWithEventGuessingTest extends TestCase
         $this->assertObjectHasAttribute('bar', $newMessage->event());
         $this->assertEquals('bar', $newMessage->event()->bar);
         $this->assertArrayHasKey('__foo_header', $newMessage->headers());
+    }
+
+    /**
+     * @test
+     */
+    public function upcasting_failed_if_type_header_not_found(): void
+    {
+        $this->expectException(UpcastFailedException::class);
+        $serializer = $this->serializer();
+        $deprecatedPayload = [
+            'headers' => [],
+            'payload' => ['foo' => 'foo'],
+        ];
+        $serializer->unserializePayload($deprecatedPayload);
     }
 
     private function upcaster(): Upcaster

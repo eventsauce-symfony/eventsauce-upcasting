@@ -57,7 +57,7 @@ final class UpcasterChainWithEventGuessing implements Upcaster
         /** @var string|null $messageEventType */
         $messageEventType = $message['headers'][$this->headerEventType] ?? null;
         if (null === $messageEventType) {
-            throw UpcastFailedException::unableGuessEventBecauseHeaderNotFound($this->headerEventType);
+            throw UpcastFailedException::typeHeaderNotFound($this->headerEventType);
         }
 
         $currentEvent = $this->classNameInflector->typeToClassName($messageEventType);
