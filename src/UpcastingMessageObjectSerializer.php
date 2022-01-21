@@ -11,9 +11,9 @@ final class UpcastingMessageObjectSerializer implements MessageSerializer
 {
     private MessageSerializer $eventSerializer;
 
-    private ObjectUpcaster $upcaster;
+    private MessageUpcaster $upcaster;
 
-    public function __construct(MessageSerializer $eventSerializer, ObjectUpcaster $upcaster)
+    public function __construct(MessageSerializer $eventSerializer, MessageUpcaster $upcaster)
     {
         $this->eventSerializer = $eventSerializer;
         $this->upcaster = $upcaster;

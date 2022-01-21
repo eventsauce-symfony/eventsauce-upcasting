@@ -6,7 +6,7 @@ namespace Andreo\EventSauce\Upcasting;
 
 use EventSauce\EventSourcing\Message;
 
-interface ObjectUpcaster
+interface MessageUpcaster
 {
     public function upcast(Message $message): Message;
 }

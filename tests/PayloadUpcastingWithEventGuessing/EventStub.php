@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\UpcastingWithEventGuessing;
+namespace Tests\PayloadUpcastingWithEventGuessing;
 
 use EventSauce\EventSourcing\Serialization\SerializablePayload;
 

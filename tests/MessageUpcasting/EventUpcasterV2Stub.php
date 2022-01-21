@@ -2,19 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Tests\ObjectUpcasting;
+namespace Tests\MessageUpcasting;
 
-use Andreo\EventSauce\Upcasting\AsUpcaster;
-use Andreo\EventSauce\Upcasting\ObjectUpcaster;
+use Andreo\EventSauce\Upcasting\Event;
+use Andreo\EventSauce\Upcasting\MessageUpcaster;
 use EventSauce\EventSourcing\Message;
 
-#[AsUpcaster(
-    aggregate: 'test',
-    version: 2,
-    deprecatedEvent: DeprecatedEventStub::class
-)]
-final class EventUpcasterV2Stub implements ObjectUpcaster
+final class EventUpcasterV2Stub implements MessageUpcaster
 {
+    #[Event(event: DeprecatedEventStub::class)]
     public function upcast(Message $message): Message
     {
         $event = $message->event();

@@ -2,18 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\UpcastingWithEventGuessing;
+namespace Tests\PayloadUpcastingWithEventGuessing;
 
-use Andreo\EventSauce\Upcasting\AsUpcaster;
+use Andreo\EventSauce\Upcasting\Event;
 use EventSauce\EventSourcing\Upcasting\Upcaster;
 
-#[AsUpcaster(
-    aggregate: 'test',
-    version: 2,
-    deprecatedEvent: EventStub::class
-)]
 final class EventUpcasterV2Stub implements Upcaster
 {
+    #[Event(event: EventStub::class)]
     public function upcast(array $message): array
     {
         $message['payload']['bar'] = 'bar';

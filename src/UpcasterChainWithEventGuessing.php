@@ -32,13 +32,14 @@ final class UpcasterChainWithEventGuessing implements Upcaster
     {
         foreach ($this->upcasters as $upcaster) {
             $reflection = new ReflectionObject($upcaster);
-            $reflectionAttribute = $reflection->getAttributes(AsUpcaster::class)[0] ?? null;
-            assert($reflectionAttribute instanceof ReflectionAttribute);
+            $upcastMethod = $reflection->getMethod('upcast');
+            $reflectionAttribute = $upcastMethod->getAttributes(Event::class)[0] ?? null;
 
-            $attribute = $reflectionAttribute->newInstance();
-            assert($attribute instanceof AsUpcaster);
-            if (null !== $deprecatedEvent = $attribute->deprecatedEvent) {
-                if ($this->isEventMatch($deprecatedEvent, $message)) {
+            if ($reflectionAttribute instanceof ReflectionAttribute) {
+                $guessEventAttribute = $reflectionAttribute->newInstance();
+                assert($guessEventAttribute instanceof Event);
+
+                if ($this->isEventMatch($guessEventAttribute->event, $message)) {
                     $message = $upcaster->upcast($message);
                 }
             } else {

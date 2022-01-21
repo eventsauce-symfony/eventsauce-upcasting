@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\UpcastingWithEventGuessing;
+namespace Tests\PayloadUpcastingWithEventGuessing;
 
 use Andreo\EventSauce\Upcasting\Exception\UpcastFailedException;
 use Andreo\EventSauce\Upcasting\UpcasterChainWithEventGuessing;

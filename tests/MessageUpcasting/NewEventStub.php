@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\ObjectUpcasting;
+namespace Tests\MessageUpcasting;
 
 use EventSauce\EventSourcing\Serialization\SerializablePayload;
 

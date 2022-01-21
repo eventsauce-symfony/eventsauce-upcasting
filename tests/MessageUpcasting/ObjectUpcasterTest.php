@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\ObjectUpcasting;
+namespace Tests\MessageUpcasting;
 
-use Andreo\EventSauce\Upcasting\ObjectUpcaster;
-use Andreo\EventSauce\Upcasting\ObjectUpcasterChain;
+use Andreo\EventSauce\Upcasting\MessageUpcaster;
+use Andreo\EventSauce\Upcasting\MessageUpcasterChain;
 use Andreo\EventSauce\Upcasting\UpcastingMessageObjectSerializer;
 use EventSauce\EventSourcing\Header;
 use EventSauce\EventSourcing\Message;
@@ -43,9 +43,9 @@ final class ObjectUpcasterTest extends TestCase
         $this->assertArrayHasKey('__foo_header', $newMessage->headers());
     }
 
-    private function upcaster(): ObjectUpcaster
+    private function upcaster(): MessageUpcaster
     {
-        return new ObjectUpcasterChain([new EventUpcasterV2Stub()]);
+        return new MessageUpcasterChain([new EventUpcasterV2Stub()]);
     }
 
     private function serializer(): UpcastingMessageObjectSerializer

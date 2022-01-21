@@ -8,10 +8,10 @@ use EventSauce\EventSourcing\Message;
 use ReflectionAttribute;
 use ReflectionObject;
 
-final class ObjectUpcasterChain implements ObjectUpcaster
+final class MessageUpcasterChain implements MessageUpcaster
 {
     /**
-     * @param iterable<ObjectUpcaster> $upcasters
+     * @param iterable<MessageUpcaster> $upcasters
      */
     public function __construct(
         private iterable $upcasters
@@ -22,13 +22,14 @@ final class ObjectUpcasterChain implements ObjectUpcaster
     {
         foreach ($this->upcasters as $upcaster) {
             $reflection = new ReflectionObject($upcaster);
-            $reflectionAttribute = $reflection->getAttributes(AsUpcaster::class)[0] ?? null;
-            assert($reflectionAttribute instanceof ReflectionAttribute);
+            $upcastMethod = $reflection->getMethod('upcast');
+            $reflectionAttribute = $upcastMethod->getAttributes(Event::class)[0] ?? null;
 
-            $attribute = $reflectionAttribute->newInstance();
-            assert($attribute instanceof AsUpcaster);
-            if (null !== $deprecatedEvent = $attribute->deprecatedEvent) {
-                if ($deprecatedEvent === $message->event()::class) {
+            if ($reflectionAttribute instanceof ReflectionAttribute) {
+                $guessEventAttribute = $reflectionAttribute->newInstance();
+                assert($guessEventAttribute instanceof Event);
+
+                if ($guessEventAttribute->event === $message->event()::class) {
                     $message = $upcaster->upcast($message);
                 }
             } else {
