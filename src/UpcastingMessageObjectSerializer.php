@@ -9,13 +9,13 @@ use EventSauce\EventSourcing\Serialization\MessageSerializer;
 
 final class UpcastingMessageObjectSerializer implements MessageSerializer
 {
-    private MessageSerializer $eventSerializer;
+    private MessageSerializer $messageSerializer;
 
     private MessageUpcaster $upcaster;
 
-    public function __construct(MessageSerializer $eventSerializer, MessageUpcaster $upcaster)
+    public function __construct(MessageSerializer $messageSerializer, MessageUpcaster $upcaster)
     {
-        $this->eventSerializer = $eventSerializer;
+        $this->messageSerializer = $messageSerializer;
         $this->upcaster = $upcaster;
     }
 
@@ -24,7 +24,7 @@ final class UpcastingMessageObjectSerializer implements MessageSerializer
      */
     public function serializeMessage(Message $message): array
     {
-        return $this->eventSerializer->serializeMessage($message);
+        return $this->messageSerializer->serializeMessage($message);
     }
 
     /**
@@ -32,7 +32,7 @@ final class UpcastingMessageObjectSerializer implements MessageSerializer
      */
     public function unserializePayload(array $payload): Message
     {
-        $message = $this->eventSerializer->unserializePayload($payload);
+        $message = $this->messageSerializer->unserializePayload($payload);
 
         return $this->upcaster->upcast($message);
     }

@@ -17,7 +17,7 @@ final class ObjectUpcasterTest extends TestCase
     /**
      * @test
      */
-    public function upcasting_message(): void
+    public function should_upcast_message(): void
     {
         $upcaster = $this->upcaster();
         $deprecatedMessage = new Message(new DeprecatedEventStub('foo'));
@@ -30,7 +30,7 @@ final class ObjectUpcasterTest extends TestCase
     /**
      * @test
      */
-    public function serialize_with_upcasting(): void
+    public function should_serialize_and_upcast_message(): void
     {
         $serializer = $this->serializer();
         $deprecatedMessage = new Message($deprecatedEvent = new DeprecatedEventStub('foo'));

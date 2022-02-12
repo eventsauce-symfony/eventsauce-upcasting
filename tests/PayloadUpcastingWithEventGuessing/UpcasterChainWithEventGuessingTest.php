@@ -18,7 +18,7 @@ final class UpcasterChainWithEventGuessingTest extends TestCase
     /**
      * @test
      */
-    public function upcasting_message(): void
+    public function should_upcast_message(): void
     {
         $serializer = $this->serializer();
         $deprecatedPayload = [
@@ -38,7 +38,7 @@ final class UpcasterChainWithEventGuessingTest extends TestCase
     /**
      * @test
      */
-    public function upcasting_failed_if_type_header_not_found(): void
+    public function should_throw_exception_if_type_header_not_found(): void
     {
         $this->expectException(UpcastFailedException::class);
         $serializer = $this->serializer();
