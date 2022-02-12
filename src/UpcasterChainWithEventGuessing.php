@@ -6,9 +6,9 @@ namespace Andreo\EventSauce\Upcasting;
 
 use Andreo\EventSauce\Upcasting\Exception\UpcastFailedException;
 use EventSauce\EventSourcing\ClassNameInflector;
+use EventSauce\EventSourcing\DotSeparatedSnakeCaseInflector;
 use EventSauce\EventSourcing\Header;
 use EventSauce\EventSourcing\Upcasting\Upcaster;
-use ReflectionAttribute;
 use ReflectionObject;
 
 final class UpcasterChainWithEventGuessing implements Upcaster
@@ -18,7 +18,7 @@ final class UpcasterChainWithEventGuessing implements Upcaster
      */
     public function __construct(
         private iterable $upcasters,
-        private ClassNameInflector $classNameInflector,
+        private ClassNameInflector $classNameInflector = new DotSeparatedSnakeCaseInflector(),
         private string $headerEventType = Header::EVENT_TYPE
     ) {
     }
@@ -35,7 +35,7 @@ final class UpcasterChainWithEventGuessing implements Upcaster
             $upcastMethod = $reflection->getMethod('upcast');
             $reflectionAttribute = $upcastMethod->getAttributes(Event::class)[0] ?? null;
 
-            if ($reflectionAttribute instanceof ReflectionAttribute) {
+            if (null !== $reflectionAttribute) {
                 $guessEventAttribute = $reflectionAttribute->newInstance();
                 assert($guessEventAttribute instanceof Event);
 

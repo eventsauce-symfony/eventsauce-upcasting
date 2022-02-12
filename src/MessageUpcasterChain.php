@@ -5,17 +5,21 @@ declare(strict_types=1);
 namespace Andreo\EventSauce\Upcasting;
 
 use EventSauce\EventSourcing\Message;
-use ReflectionAttribute;
 use ReflectionObject;
 
 final class MessageUpcasterChain implements MessageUpcaster
 {
     /**
-     * @param iterable<MessageUpcaster> $upcasters
+     * @var array<MessageUpcaster>
      */
-    public function __construct(
-        private iterable $upcasters
-    ) {
+    private array $upcasters;
+
+    /**
+     * @param MessageUpcaster ...$upcasters
+     */
+    public function __construct(MessageUpcaster ...$upcasters)
+    {
+        $this->upcasters = $upcasters;
     }
 
     public function upcast(Message $message): Message
@@ -25,7 +29,7 @@ final class MessageUpcasterChain implements MessageUpcaster
             $upcastMethod = $reflection->getMethod('upcast');
             $reflectionAttribute = $upcastMethod->getAttributes(Event::class)[0] ?? null;
 
-            if ($reflectionAttribute instanceof ReflectionAttribute) {
+            if (null !== $reflectionAttribute) {
                 $guessEventAttribute = $reflectionAttribute->newInstance();
                 assert($guessEventAttribute instanceof Event);
 

@@ -1,6 +1,6 @@
 {
     "name": "andreo/eventsauce-upcasting",
-    "description": "Extended upcasting components of the EventSauce.",
+    "description": "Extended upcasting components for EventSauce.",
     "keywords": [
         "eventsauce",
         "components",

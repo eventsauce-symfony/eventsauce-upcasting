@@ -45,7 +45,7 @@ final class ObjectUpcasterTest extends TestCase
 
     private function upcaster(): MessageUpcaster
     {
-        return new MessageUpcasterChain([new EventUpcasterV2Stub()]);
+        return new MessageUpcasterChain(new EventUpcasterV2Stub());
     }
 
     private function serializer(): UpcastingMessageObjectSerializer
