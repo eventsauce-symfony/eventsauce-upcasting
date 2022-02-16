@@ -10,7 +10,7 @@ use Attribute;
 final class Event
 {
     public function __construct(
-        public string $event,
+        public readonly string $event,
     ) {
     }
 }
