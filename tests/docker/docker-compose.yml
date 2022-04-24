@@ -4,10 +4,6 @@ services:
     php:
         build:
             context: ./php8
-        container_name: eventsauce_upcasting_php
+        container_name: es_upcasting_php
         volumes:
             - ../../:/var/library:rw
-        networks:
-            - default
-networks:
-    default:

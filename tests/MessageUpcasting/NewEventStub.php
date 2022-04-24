@@ -17,7 +17,7 @@ final class NewEventStub implements SerializablePayload
         return ['foo' => $this->foo, 'bar' => $this->bar];
     }
 
-    public static function fromPayload(array $payload): SerializablePayload
+    public static function fromPayload(array $payload): static
     {
         return new self($payload['foo'], $payload['bar']);
     }

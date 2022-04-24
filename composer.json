@@ -16,7 +16,7 @@
     ],
     "require": {
         "php": "^8.1",
-        "eventsauce/eventsauce": "^1.2"
+        "eventsauce/eventsauce": "^2.0"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
