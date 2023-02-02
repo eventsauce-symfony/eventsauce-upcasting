@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\PayloadUpcastingWithEventGuessing;
+namespace Andreo\EventSauce\Upcasting\Tests\MessageUpcaster\Doubles;
 
 use EventSauce\EventSourcing\Serialization\SerializablePayload;
 
-final class EventStub implements SerializablePayload
+final readonly class NewEventFake implements SerializablePayload
 {
-    public function __construct(public readonly string $foo, public readonly string $bar)
+    public function __construct(public string $foo, public string $bar)
     {
     }
 
@@ -19,6 +19,6 @@ final class EventStub implements SerializablePayload
 
     public static function fromPayload(array $payload): static
     {
-        return new self($payload['foo'], $payload['bar'] ?? 'undefined');
+        return new self($payload['foo'], $payload['bar']);
     }
 }

@@ -2,21 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Andreo\EventSauce\Upcasting;
+namespace Andreo\EventSauce\Upcasting\MessageUpcaster;
 
 use EventSauce\EventSourcing\Message;
 use ReflectionObject;
 
-final class MessageUpcasterChain implements MessageUpcaster
+final readonly class MessageUpcasterChain implements MessageUpcaster
 {
     /**
      * @var array<MessageUpcaster>
      */
     private array $upcasters;
 
-    /**
-     * @param MessageUpcaster ...$upcasters
-     */
     public function __construct(MessageUpcaster ...$upcasters)
     {
         $this->upcasters = $upcasters;

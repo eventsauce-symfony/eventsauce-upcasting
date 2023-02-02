@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Andreo\EventSauce\Upcasting;
+namespace Andreo\EventSauce\Upcasting\MessageUpcaster;
 
 use EventSauce\EventSourcing\Message;
 use EventSauce\EventSourcing\Serialization\MessageSerializer;
 
-final class UpcastingMessageObjectSerializer implements MessageSerializer
+final readonly class UpcastingMessageObjectSerializer implements MessageSerializer
 {
     private MessageSerializer $messageSerializer;
 

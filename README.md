@@ -1,4 +1,4 @@
-## eventsauce-upcasting
+## eventsauce-upcasting 3.0
 
 Extended upcasting components for EventSauce
 
@@ -10,48 +10,36 @@ Extended upcasting components for EventSauce
 composer require andreo/eventsauce-upcasting
 ```
 
+#### Previous versions doc
+
+- [2.0](https://github.com/eventsauce-symfony/eventsauce-upcasting/tree/2.0.0)
+
 ### Requirements
 
-- PHP ^8.1
+- PHP >=8.2
 
 ### Message upcaster
 
-By default, upcasting works before deserializing the message.
-This library allows upcasting on the message object after deserialization.
-
-#### Usage
-
-```php
-interface MessageUpcaster
-{
-    public function upcast(Message $message): Message;
-}
-```
-
-For example
-
 ```php
 
-use Andreo\EventSauce\Upcasting\MessageUpcaster;
+use Andreo\EventSauce\Upcasting\MessageUpcaster\MessageUpcaster;
 use EventSauce\EventSourcing\Message;
 
-final class SomeUpcaster implements MessageUpcaster
+final class FooUpcaster implements MessageUpcaster
 {
     public function upcast(Message $message): Message
     {
-        $event = $message->event();
-        if (!$event instanceof SomeEvent)) { 
+        $event = $message->payload();
+        if (!$event instanceof FooEvent)) { 
             return $message;
         }
 
-        // do something
+        return new Message(new FooEventV2()); 
     }
 }
 ```
 
-#### Using multiple message upcasters
-
-You can use multiple upcasters using the **MessageUpcasterChain**.
+#### Multiple message upcasters
 
 ```php
 
@@ -64,8 +52,9 @@ new MessageUpcasterChain(
     
 ```
 
-#### Use upcaster as message serializer
+#### Upcaster as MessageSerializer
 
+`For use in MessageRepository`
 
 ```php
 
@@ -78,90 +67,31 @@ new UpcastingMessageObjectSerializer(
     
 ```
 
-then use it in **MessageRepository**
-
 ### Event guessing
 
-Because the message is a wrapping for the event, 
-by default you have to manually check an event type. 
-You can skip manual event checking thanks to the **Event** attribute
-
 ```php
-use Andreo\EventSauce\Upcasting\MessageUpcaster;
 use EventSauce\EventSourcing\Message;
-use Andreo\EventSauce\Upcasting\Event;
+use Andreo\EventSauce\Upcasting\MessageUpcaster\MessageUpcaster;
+use Andreo\EventSauce\Upcasting\MessageUpcaster\Event;
 
-final class SomeUpcaster implements MessageUpcaster
+final class FooUpcaster implements MessageUpcaster
 {
-    #[Event(event: SomeEvent::class)]
+    #[Event(event: FooEvent::class)]
     public function upcast(Message $message): Message
     {
-        $event = $message->event();
-        assert($event instanceof SomeEvent);
+        $event = $message->payload();
+        assert($event instanceof FooEvent);
 
-        // do something
+        return new Message(new FooEventV2()); 
     }
 }
 ```
 
-#### Event attribute in default Upcaster
+### Handling events of aggregate
 
-If you want to use event guessing in the default 
-implementation of EventSauce, you can do it
-
-
-Define upcaster 
-
-```php
-use EventSauce\EventSourcing\Upcasting\Upcaster;
-use Andreo\EventSauce\Upcasting\Event;
-
-final class SomeUpcaster implements Upcaster
-{
-    #[Event(event: SomeEvent::class)]
-    public function upcast(array $message): array
-    {
-
-    }
-}
-```
-
-and use it in dedicated upcaster chain
-
-```php
-use Andreo\EventSauce\Upcasting\UpcasterChainWithEventGuessing;
-
-new UpcasterChainWithEventGuessing(
-    upcasters: [new SomeUpcaster(),],
-);
-```
-
-### Applying event problem
-
-By default, EventSauce aggregate events based on method name
+By default, EventSauce applies the events based on method name
 [convention](https://eventsauce.io/docs/event-sourcing/create-an-aggregate-root/)
 apply{EventClassName}.
-The recommended way of event upcasting is to return an event of a new type
-
-For example
-
-```php
-use Andreo\EventSauce\Upcasting\MessageUpcaster;
-use EventSauce\EventSourcing\Message;
-use Andreo\EventSauce\Upcasting\Event;
-
-final class SomeUpcaster implements MessageUpcaster
-{
-    #[Event(event: SomeEvent::class)]
-    public function upcast(Message $message): Message
-    {
-        $event = $message->event();
-        assert($event instanceof SomeEvent);
-
-        return new Message(new SomeEventV2()); // new event type v2
-    }
-}
-```
 
 So you need to rename the method in the aggregate
 
@@ -169,16 +99,16 @@ So you need to rename the method in the aggregate
 use EventSauce\EventSourcing\AggregateRoot;
 use EventSauce\EventSourcing\AggregateRootBehaviour;
 
-final class SomeAggregate implements AggregateRoot
+final class FooAggregate implements AggregateRoot
 {
     use AggregateRootBehaviour;
     
-    // before applySomeEvent
-    public function applySomeEventV2(ProcessWasInitiated $event): void
+    // before applyFooEvent
+    public function applyFooEventV2(FooEventV2 $event): void
     {
     }
 }
 ```
-It is not comfortable. To avoid this, 
-I recommend using this [extension](https://github.com/andrew-pakula/eventsauce-aggregate)
+
+You can skip this by using [component](https://github.com/andrew-pakula/eventsauce-aggregate)
 

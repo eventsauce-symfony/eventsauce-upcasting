@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Andreo\EventSauce\Upcasting;
+namespace Andreo\EventSauce\Upcasting\MessageUpcaster;
 
 use EventSauce\EventSourcing\Message;
 
